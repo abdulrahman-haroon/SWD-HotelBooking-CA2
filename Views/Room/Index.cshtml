@@ -1,0 +1,38 @@
+@model IEnumerable<HotelBooking_CA2.Models.Room>
+
+@{
+    ViewData["Title"] = "Available Rooms";
+}
+
+<h2>Available Rooms</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Room Number</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Price Per Night</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model)
+            {
+                <tr>
+                    <td>@room.RoomNumber</td>
+                    <td>@room.RoomType</td>
+                    <td>@room.Capacity</td>
+                    <td>€@room.PricePerNight.ToString("F2")</td>
+                    <td><a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-sm btn-primary">Book</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="mt-3">No rooms available at the moment.</p>
+}

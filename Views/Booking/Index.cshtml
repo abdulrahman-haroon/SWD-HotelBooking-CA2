@@ -1,0 +1,40 @@
+@model IEnumerable<HotelBooking_CA2.Models.Booking>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<h2>My Bookings</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Room</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Booked At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.Room.RoomNumber - @booking.Room.RoomType</td>
+                    <td>@booking.CheckIn.ToString("dd/MM/yyyy")</td>
+                    <td>@booking.CheckOut.ToString("dd/MM/yyyy")</td>
+                    <td>€@booking.TotalPrice.ToString("F2")</td>
+                    <td>@booking.Status</td>
+                    <td>@booking.BookedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="mt-3">You have no bookings yet. <a asp-controller="Room" asp-action="Index">Browse rooms</a> to make one.</p>
+}
