@@ -1,7 +1,10 @@
+using HotelBooking_CA2.Dependencies;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddServicesDependency(builder.Configuration);
 
 var app = builder.Build();
 
