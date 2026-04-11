@@ -1,9 +1,9 @@
-﻿using HotelBooking_CA2.Context;
+using HotelBooking_CA2.Context;
 using HotelBooking_CA2.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace OTA.BLL.Services
+namespace HotelBooking_CA2.Services
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

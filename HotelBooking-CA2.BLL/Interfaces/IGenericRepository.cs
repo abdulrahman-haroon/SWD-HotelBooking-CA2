@@ -1,4 +1,4 @@
-﻿using HotelBooking_CA2.Context;
+using HotelBooking_CA2.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

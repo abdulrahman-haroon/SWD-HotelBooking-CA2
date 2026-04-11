@@ -1,8 +1,9 @@
-﻿using HotelBooking_CA2.Context;
+using HotelBooking_CA2.Context;
 using HotelBooking_CA2.Interfaces;
+using HotelBooking_CA2.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using OTA.BLL.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HotelBooking_CA2.Dependencies
 {
@@ -12,7 +13,7 @@ namespace HotelBooking_CA2.Dependencies
         {
             services.AddDbContext<OTA_APP_DBContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("BedBankDb"), providerOptions => providerOptions.EnableRetryOnFailure()));
 
-            services.AddScoped(typeof(IGenericRepository<>), typeof(IGenericRepository<>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookingService, BookingService>();

@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="HotelBooking-CA2.BLL/HotelBooking-CA2.BLL.csproj" />
   <Project Path="HotelBooking-CA2.csproj" />
+  <Project Path="HotelBooking-CA2.DAL/HotelBooking-CA2.DAL.csproj" />
 </Solution>

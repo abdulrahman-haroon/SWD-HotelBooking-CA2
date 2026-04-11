@@ -1,4 +1,4 @@
-﻿using HotelBooking_CA2.Models;
+using HotelBooking_CA2.Models;
 
 namespace HotelBooking_CA2.Interfaces
 {

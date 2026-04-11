@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HotelBooking_CA2.Models;
 using Microsoft.EntityFrameworkCore;
