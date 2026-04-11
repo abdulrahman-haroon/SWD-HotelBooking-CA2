@@ -1,0 +1,41 @@
+@model IEnumerable<HotelBooking_CA2.Models.Room>
+
+@{
+    ViewData["Title"] = "Manage Rooms";
+}
+
+<h2>Manage Rooms</h2>
+
+<a asp-controller="Admin" asp-action="CreateRoom" class="btn btn-success mt-2 mb-3">Add Room</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Room Number</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Price/Night</th>
+            <th>Available</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model)
+        {
+            <tr>
+                <td>@room.RoomNumber</td>
+                <td>@room.RoomType</td>
+                <td>@room.Capacity</td>
+                <td>€@room.PricePerNight.ToString("F2")</td>
+                <td>@(room.IsAvailable ? "Yes" : "No")</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="EditRoom" asp-route-id="@room.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <form method="post" asp-controller="Admin" asp-action="DeleteRoom" style="display:inline;">
+                        <input type="hidden" name="id" value="@room.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this room?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

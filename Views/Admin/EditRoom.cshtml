@@ -1,0 +1,55 @@
+@model dynamic
+
+@{
+    var room = (HotelBooking_CA2.Models.Room)Model.Room;
+    ViewData["Title"] = "Edit Room " + room.RoomNumber;
+}
+
+<h2>Edit Room @room.RoomNumber</h2>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post" asp-controller="Admin" asp-action="EditRoom" style="max-width: 500px;" class="mt-3">
+    <input type="hidden" name="id" value="@room.Id" />
+
+    <div class="mb-3">
+        <label for="roomNumber" class="form-label">Room Number</label>
+        <input type="text" class="form-control" id="roomNumber" name="roomNumber" value="@room.RoomNumber" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="roomType" class="form-label">Room Type</label>
+        <input type="text" class="form-control" id="roomType" name="roomType" value="@room.RoomType" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3">@room.Description</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="pricePerNight" class="form-label">Price Per Night (€)</label>
+        <input type="number" class="form-control" id="pricePerNight" name="pricePerNight" step="0.01" min="0" value="@room.PricePerNight" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="capacity" class="form-label">Capacity</label>
+        <input type="number" class="form-control" id="capacity" name="capacity" min="1" value="@room.Capacity" required />
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="isAvailable" name="isAvailable" value="true" @(room.IsAvailable ? "checked" : "") />
+        <label class="form-check-label" for="isAvailable">Available</label>
+    </div>
+
+    <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image URL</label>
+        <input type="text" class="form-control" id="imageUrl" name="imageUrl" value="@room.ImageUrl" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">Save Changes</button>
+    <a asp-controller="Admin" asp-action="Rooms" class="btn btn-secondary">Cancel</a>
+</form>

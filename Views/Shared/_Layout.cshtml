@@ -34,13 +34,26 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">My Bookings</a>
                             </li>
+                            @if (Context.Session.GetString("UserRole") == "Admin")
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                                        Admin
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index">Dashboard</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Rooms">Manage Rooms</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Bookings">All Bookings</a></li>
+                                    </ul>
+                                </li>
+                            }
                         }
                     </ul>
                     <ul class="navbar-nav">
                         @if (Context.Session.GetString("UserName") != null)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-dark">Hello, @Context.Session.GetString("UserName")</span>
+                                <span class="nav-link text-dark">Hello, @Context.Session.GetString("UserName") (@Context.Session.GetString("UserRole"))</span>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>

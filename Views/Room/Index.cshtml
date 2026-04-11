@@ -26,7 +26,7 @@
                     <td>@room.RoomType</td>
                     <td>@room.Capacity</td>
                     <td>€@room.PricePerNight.ToString("F2")</td>
-                    <td><a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-sm btn-primary">Book</a></td>
+                    <td><a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-sm btn-primary">Book</a> <a asp-controller="Room" asp-action="Details" asp-route-id="@room.Id" class="btn btn-sm btn-outline-secondary">Details</a></td>
                 </tr>
             }
         </tbody>
