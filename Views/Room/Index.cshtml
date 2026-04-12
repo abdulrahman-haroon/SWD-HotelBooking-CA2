@@ -6,6 +6,13 @@
 
 <h2>Available Rooms</h2>
 
+<form method="get" asp-controller="Room" asp-action="Index" class="mt-3 mb-3">
+    <div class="input-group" style="max-width: 400px;">
+        <input type="text" class="form-control" name="search" value="@ViewData["Search"]" placeholder="Search by room type or number..." />
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </div>
+</form>
+
 @if (Model.Any())
 {
     <table class="table table-bordered table-striped mt-3">

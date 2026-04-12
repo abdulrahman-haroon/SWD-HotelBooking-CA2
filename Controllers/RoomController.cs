@@ -19,9 +19,22 @@ namespace HotelBooking_CA2.Controllers
             model = new ExpandoObject();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string search)
         {
-            var rooms = _roomService.Find(r => r.IsAvailable);
+            IEnumerable<Room> rooms;
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                // intentionally vulnerable - string concatenation in raw SQL allows SQL injection
+                var sql = "SELECT * FROM Rooms WHERE IsAvailable = 1 AND (RoomType LIKE '%" + search + "%' OR RoomNumber LIKE '%" + search + "%')";
+                rooms = _roomService.dbset().FromSqlRaw(sql).ToList();
+            }
+            else
+            {
+                rooms = _roomService.Find(r => r.IsAvailable);
+            }
+
+            ViewData["Search"] = search;
             return View(rooms);
         }
 
