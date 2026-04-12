@@ -41,7 +41,14 @@
     </div>
 
     <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="isAvailable" name="isAvailable" value="true" @(room.IsAvailable ? "checked" : "") />
+        @if (room.IsAvailable)
+        {
+            <input type="checkbox" class="form-check-input" id="isAvailable" name="isAvailable" value="true" checked />
+        }
+        else
+        {
+            <input type="checkbox" class="form-check-input" id="isAvailable" name="isAvailable" value="true" />
+        }
         <label class="form-check-label" for="isAvailable">Available</label>
     </div>
 
