@@ -41,7 +41,7 @@ namespace HotelBooking_CA2.Controllers
 
             var room = _roomService.GetById(roomId);
             if (room == null)
-                return RedirectToAction("Index", "Room");
+                return NotFound();
 
             model.Error = (string)null;
             model.Room = room;
@@ -57,7 +57,7 @@ namespace HotelBooking_CA2.Controllers
 
             var room = _roomService.GetById(roomId);
             if (room == null)
-                return RedirectToAction("Index", "Room");
+                return NotFound();
 
             model.Error = (string)null;
             model.Room = room;

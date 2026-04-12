@@ -42,7 +42,7 @@ namespace HotelBooking_CA2.Controllers
         {
             var room = _roomService.GetById(id);
             if (room == null)
-                return RedirectToAction("Index");
+                return NotFound();
 
             var reviews = _reviewService.dbset()
                 .Include(r => r.User)
@@ -65,7 +65,7 @@ namespace HotelBooking_CA2.Controllers
 
             var room = _roomService.GetById(roomId);
             if (room == null)
-                return RedirectToAction("Index");
+                return NotFound();
 
             if (rating < 1 || rating > 5 || string.IsNullOrEmpty(comment))
             {

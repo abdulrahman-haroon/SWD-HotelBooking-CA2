@@ -99,7 +99,7 @@ namespace HotelBooking_CA2.Controllers
 
             var room = _roomService.GetById(id);
             if (room == null)
-                return RedirectToAction("Rooms");
+                return NotFound();
 
             model.Room = room;
             model.Error = (string)null;
@@ -114,7 +114,7 @@ namespace HotelBooking_CA2.Controllers
 
             var room = _roomService.GetById(id);
             if (room == null)
-                return RedirectToAction("Rooms");
+                return NotFound();
 
             model.Room = room;
             model.Error = (string)null;
@@ -177,7 +177,7 @@ namespace HotelBooking_CA2.Controllers
                 .FirstOrDefault(b => b.Id == id);
 
             if (booking == null)
-                return RedirectToAction("Bookings");
+                return NotFound();
 
             model.Booking = booking;
             model.Error = (string)null;
@@ -195,13 +195,13 @@ namespace HotelBooking_CA2.Controllers
                 .Include(b => b.User)
                 .FirstOrDefault(b => b.Id == id);
 
-            if (booking == null)
-                return RedirectToAction("Bookings");
+                if (booking == null)
+                    return NotFound();
 
-            model.Booking = booking;
-            model.Error = (string)null;
+                model.Booking = booking;
+                model.Error = (string)null;
 
-            if (checkIn >= checkOut)
+                if (checkIn >= checkOut)
             {
                 model.Error = "Check-out date must be after check-in date.";
                 return View(model);
@@ -307,7 +307,7 @@ namespace HotelBooking_CA2.Controllers
 
             var user = _userService.GetById(id);
             if (user == null)
-                return RedirectToAction("Users");
+                return NotFound();
 
             model.User = user;
             model.Error = (string)null;
@@ -322,7 +322,7 @@ namespace HotelBooking_CA2.Controllers
 
             var user = _userService.GetById(id);
             if (user == null)
-                return RedirectToAction("Users");
+                return NotFound();
 
             model.User = user;
             model.Error = (string)null;
