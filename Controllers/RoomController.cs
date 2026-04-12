@@ -26,7 +26,7 @@ namespace HotelBooking_CA2.Controllers
             if (!string.IsNullOrEmpty(search))
             {
                 // intentionally vulnerable - string concatenation in raw SQL allows SQL injection
-                var sql = "SELECT * FROM Rooms WHERE IsAvailable = 1 AND (RoomType LIKE '%" + search + "%' OR RoomNumber LIKE '%" + search + "%')";
+                var sql = "SELECT * FROM Rooms WHERE IsAvailable = 1 AND RoomType LIKE '%" + search + "%'";
                 rooms = _roomService.dbset().FromSqlRaw(sql).ToList();
             }
             else

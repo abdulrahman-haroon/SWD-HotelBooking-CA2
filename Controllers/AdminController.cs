@@ -143,8 +143,14 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult DeleteRoom(int id)
         {
             // no admin check - intentionally vulnerable to privilege escalation
-            _roomService.Delete(id);
-            _roomService.SaveChanges();
+            var result = _roomService.Delete(id);
+            var saveResult = _roomService.SaveChanges();
+
+            // intentionally vulnerable - exposes internal error details to the user
+            if (!string.IsNullOrEmpty(result))
+                return Content(result);
+            if (!string.IsNullOrEmpty(saveResult))
+                return Content(saveResult);
 
             return RedirectToAction("Rooms");
         }

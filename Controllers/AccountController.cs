@@ -111,5 +111,17 @@ namespace HotelBooking_CA2.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
+
+        // intentionally vulnerable - exposes session data for debugging, no auth check
+        public IActionResult SessionDebug()
+        {
+            var data = new
+            {
+                UserId = HttpContext.Session.GetInt32("UserId"),
+                UserName = HttpContext.Session.GetString("UserName"),
+                UserRole = HttpContext.Session.GetString("UserRole")
+            };
+            return Json(data);
+        }
     }
 }

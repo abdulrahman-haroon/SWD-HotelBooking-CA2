@@ -9,6 +9,14 @@
 <h2>Room @room.RoomNumber</h2>
 
 <div class="card mt-3" style="max-width: 600px;">
+    @if (!string.IsNullOrEmpty(room.ImageUrl))
+    {
+        <img src="@room.ImageUrl" class="card-img-top" alt="Room @room.RoomNumber" style="height: 300px; object-fit: cover;" />
+    }
+    else
+    {
+        <img src="https://placehold.co/600x300?text=Room+@room.RoomNumber" class="card-img-top" alt="Room @room.RoomNumber" style="height: 300px; object-fit: cover;" />
+    }
     <div class="card-body">
         <p><strong>Type:</strong> @room.RoomType</p>
         <p><strong>Capacity:</strong> @room.Capacity</p>
