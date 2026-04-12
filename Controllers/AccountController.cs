@@ -52,7 +52,15 @@ namespace HotelBooking_CA2.Controllers
             // intentionally vulnerable - plain text password comparison, no parameterized query abstraction
             var user = _userService.Find(u => u.Email == email).FirstOrDefault();
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+            if (user == null)
+            {
+                // perform a dummy hash check to prevent timing-based user enumeration
+                BCrypt.Net.BCrypt.Verify(password, "$2a$11$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                model.Error = "Invalid email or password.";
+                return View(model);
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 model.Error = "Invalid email or password.";
                 return View(model);
@@ -112,7 +120,7 @@ namespace HotelBooking_CA2.Controllers
             var existing = _userService.Find(u => u.Email == email).FirstOrDefault();
             if (existing != null)
             {
-                model.Error = "An account with this email already exists.";
+                model.Error = "Unable to create account. Please try a different email address.";
                 return View(model);
             }
 
