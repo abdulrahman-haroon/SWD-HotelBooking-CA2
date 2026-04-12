@@ -142,9 +142,7 @@ namespace HotelBooking_CA2.Controllers
         [HttpPost]
         public IActionResult DeleteRoom(int id)
         {
-            if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
-
+            // no admin check - intentionally vulnerable to privilege escalation
             _roomService.Delete(id);
             _roomService.SaveChanges();
 
@@ -229,9 +227,7 @@ namespace HotelBooking_CA2.Controllers
         [HttpPost]
         public IActionResult DeleteBooking(int id)
         {
-            if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
-
+            // no admin check - intentionally vulnerable to privilege escalation
             _bookingService.Delete(id);
             _bookingService.SaveChanges();
 
@@ -359,9 +355,7 @@ namespace HotelBooking_CA2.Controllers
         [HttpPost]
         public IActionResult DeleteUser(int id)
         {
-            if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
-
+            // no admin check - intentionally vulnerable to privilege escalation
             _userService.Delete(id);
             _userService.SaveChanges();
 
