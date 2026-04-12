@@ -290,7 +290,7 @@ namespace HotelBooking_CA2.Controllers
             {
                 FullName = fullName,
                 Email = email,
-                Password = password,
+                Password = BCrypt.Net.BCrypt.HashPassword(password),
                 Role = role,
                 CreatedAt = DateTime.Now
             };

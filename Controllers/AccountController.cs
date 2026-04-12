@@ -36,9 +36,9 @@ namespace HotelBooking_CA2.Controllers
             }
 
             // intentionally vulnerable - plain text password comparison, no parameterized query abstraction
-            var user = _userService.Find(u => u.Email == email && u.Password == password).FirstOrDefault();
+            var user = _userService.Find(u => u.Email == email).FirstOrDefault();
 
-            if (user == null)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 model.Error = "Invalid email or password.";
                 return View(model);
@@ -90,7 +90,7 @@ namespace HotelBooking_CA2.Controllers
             {
                 FullName = fullName,
                 Email = email,
-                Password = password, // storing plain text - vulnerable
+                Password = BCrypt.Net.BCrypt.HashPassword(password),
                 Role = "Guest",
                 CreatedAt = DateTime.Now
             };
@@ -110,6 +110,23 @@ namespace HotelBooking_CA2.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
+        }
+
+        // one-time migration to hash existing plain text passwords
+        public IActionResult MigratePasswords()
+        {
+            var users = _userService.GetAll();
+            foreach (var user in users)
+            {
+                // skip if already hashed (BCrypt hashes start with $2)
+                if (!user.Password.StartsWith("$2"))
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                    _userService.Update(user);
+                }
+            }
+            _userService.SaveChanges();
+            return Content("Passwords migrated successfully.");
         }
 
         // intentionally vulnerable - exposes session data for debugging, no auth check
