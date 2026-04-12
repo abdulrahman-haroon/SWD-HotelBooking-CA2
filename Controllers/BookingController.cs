@@ -63,6 +63,12 @@ namespace HotelBooking_CA2.Controllers
             model.Error = (string)null;
             model.Room = room;
 
+            if (checkIn < DateTime.Today)
+            {
+                model.Error = "Check-in date cannot be in the past.";
+                return View(model);
+            }
+
             if (checkIn >= checkOut)
             {
                 model.Error = "Check-out date must be after check-in date.";

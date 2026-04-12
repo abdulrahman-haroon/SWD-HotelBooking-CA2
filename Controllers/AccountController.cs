@@ -1,5 +1,6 @@
 using HotelBooking_CA2.Interfaces;
 using HotelBooking_CA2.Models;
+using HotelBooking_CA2.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 
@@ -27,12 +28,20 @@ namespace HotelBooking_CA2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(string email, string password)
         {
-            
+
             model.Error = (string)null;
+
+            email = InputValidator.Sanitize(email);
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 model.Error = "Please fill in all fields.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                model.Error = "Please enter a valid email address.";
                 return View(model);
             }
 
@@ -68,9 +77,24 @@ namespace HotelBooking_CA2.Controllers
             
             model.Error = (string)null;
 
+            fullName = InputValidator.Sanitize(fullName);
+            email = InputValidator.Sanitize(email);
+
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 model.Error = "All fields are required.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidLength(fullName, 2, 100))
+            {
+                model.Error = "Full name must be between 2 and 100 characters.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                model.Error = "Please enter a valid email address.";
                 return View(model);
             }
 

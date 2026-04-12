@@ -1,5 +1,6 @@
 using HotelBooking_CA2.Interfaces;
 using HotelBooking_CA2.Models;
+using HotelBooking_CA2.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Dynamic;
@@ -69,9 +70,26 @@ namespace HotelBooking_CA2.Controllers
 
             model.Error = (string)null;
 
+            roomNumber = InputValidator.Sanitize(roomNumber);
+            roomType = InputValidator.Sanitize(roomType);
+            description = InputValidator.Sanitize(description);
+            imageUrl = InputValidator.Sanitize(imageUrl);
+
             if (string.IsNullOrEmpty(roomNumber) || string.IsNullOrEmpty(roomType))
             {
                 model.Error = "Room number and type are required.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidLength(roomNumber, 1, 10) || !InputValidator.IsValidLength(roomType, 2, 50))
+            {
+                model.Error = "Room number (max 10) and type (2-50 chars) must be valid lengths.";
+                return View(model);
+            }
+
+            if (pricePerNight <= 0 || capacity <= 0)
+            {
+                model.Error = "Price and capacity must be greater than zero.";
                 return View(model);
             }
 
@@ -121,9 +139,26 @@ namespace HotelBooking_CA2.Controllers
             model.Room = room;
             model.Error = (string)null;
 
+            roomNumber = InputValidator.Sanitize(roomNumber);
+            roomType = InputValidator.Sanitize(roomType);
+            description = InputValidator.Sanitize(description);
+            imageUrl = InputValidator.Sanitize(imageUrl);
+
             if (string.IsNullOrEmpty(roomNumber) || string.IsNullOrEmpty(roomType))
             {
                 model.Error = "Room number and type are required.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidLength(roomNumber, 1, 10) || !InputValidator.IsValidLength(roomType, 2, 50))
+            {
+                model.Error = "Room number (max 10) and type (2-50 chars) must be valid lengths.";
+                return View(model);
+            }
+
+            if (pricePerNight <= 0 || capacity <= 0)
+            {
+                model.Error = "Price and capacity must be greater than zero.";
                 return View(model);
             }
 
@@ -273,9 +308,24 @@ namespace HotelBooking_CA2.Controllers
 
             model.Error = (string)null;
 
+            fullName = InputValidator.Sanitize(fullName);
+            email = InputValidator.Sanitize(email);
+
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 model.Error = "All fields are required.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidLength(fullName, 2, 100))
+            {
+                model.Error = "Full name must be between 2 and 100 characters.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                model.Error = "Please enter a valid email address.";
                 return View(model);
             }
 
@@ -336,9 +386,24 @@ namespace HotelBooking_CA2.Controllers
             model.User = user;
             model.Error = (string)null;
 
+            fullName = InputValidator.Sanitize(fullName);
+            email = InputValidator.Sanitize(email);
+
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email))
             {
                 model.Error = "Name and email are required.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidLength(fullName, 2, 100))
+            {
+                model.Error = "Full name must be between 2 and 100 characters.";
+                return View(model);
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                model.Error = "Please enter a valid email address.";
                 return View(model);
             }
 

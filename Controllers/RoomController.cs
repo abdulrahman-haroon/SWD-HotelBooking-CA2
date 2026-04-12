@@ -1,5 +1,6 @@
 using HotelBooking_CA2.Interfaces;
 using HotelBooking_CA2.Models;
+using HotelBooking_CA2.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Dynamic;
@@ -70,7 +71,9 @@ namespace HotelBooking_CA2.Controllers
             if (room == null)
                 return NotFound();
 
-            if (rating < 1 || rating > 5 || string.IsNullOrEmpty(comment))
+            comment = InputValidator.Sanitize(comment);
+
+            if (rating < 1 || rating > 5 || string.IsNullOrEmpty(comment) || !InputValidator.IsValidLength(comment, 2, 500))
             {
                 var reviews = _reviewService.dbset()
                     .Include(r => r.User)
@@ -80,7 +83,7 @@ namespace HotelBooking_CA2.Controllers
 
                 model.Room = room;
                 model.Reviews = reviews;
-                model.Error = "Please provide a rating (1-5) and a comment.";
+                model.Error = "Please provide a rating (1-5) and a comment that is less than 500 characters.";
                 return View("Details", model);
             }
 
