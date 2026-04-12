@@ -12,19 +12,21 @@ namespace HotelBooking_CA2.Controllers
         private readonly IRoomService _roomService;
         private readonly IBookingService _bookingService;
         private readonly IUserService _userService;
+        private readonly SessionHelper _session;
         private readonly dynamic model;
 
-        public AdminController(IRoomService roomService, IBookingService bookingService, IUserService userService)
+        public AdminController(IRoomService roomService, IBookingService bookingService, IUserService userService, SessionHelper session)
         {
             _roomService = roomService;
             _bookingService = bookingService;
             _userService = userService;
+            _session = session;
             model = new ExpandoObject();
         }
 
         private bool IsAdmin()
         {
-            return HttpContext.Session.GetString("UserRole") == "Admin";
+            return _session.GetString("UserRole") == "Admin";
         }
 
         public IActionResult Index()

@@ -1,5 +1,6 @@
 using HotelBooking_CA2.Interfaces;
 using HotelBooking_CA2.Models;
+using HotelBooking_CA2.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Dynamic;
@@ -10,18 +11,20 @@ namespace HotelBooking_CA2.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IRoomService _roomService;
+        private readonly SessionHelper _session;
         private readonly dynamic model;
 
-        public BookingController(IBookingService bookingService, IRoomService roomService)
+        public BookingController(IBookingService bookingService, IRoomService roomService, SessionHelper session)
         {
             _bookingService = bookingService;
             _roomService = roomService;
+            _session = session;
             model = new ExpandoObject();
         }
 
         public IActionResult Index()
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = _session.GetInt32("UserId");
             if (userId == null)
                 return RedirectToAction("Login", "Account");
 
@@ -35,7 +38,7 @@ namespace HotelBooking_CA2.Controllers
         [HttpGet]
         public IActionResult Create(int roomId)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = _session.GetInt32("UserId");
             if (userId == null)
                 return RedirectToAction("Login", "Account");
 
@@ -52,7 +55,7 @@ namespace HotelBooking_CA2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(int roomId, DateTime checkIn, DateTime checkOut)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = _session.GetInt32("UserId");
             if (userId == null)
                 return RedirectToAction("Login", "Account");
 

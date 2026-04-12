@@ -1,10 +1,34 @@
 using HotelBooking_CA2.Dependencies;
+using HotelBooking_CA2.Helpers;
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddServicesDependency(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDataProtection();
+builder.Services.AddScoped<SessionHelper>();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.OnRejected = async (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.Redirect("/Account/Login?rateLimited=true");
+        await Task.CompletedTask;
+    };
+
+    options.AddFixedWindowLimiter("LoginRateLimit", opt =>
+    {
+        opt.PermitLimit = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+    });
+});
 
 builder.Services.AddSession(options =>
 {
@@ -28,6 +52,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseRouting();
+app.UseRateLimiter();
 
 app.UseSession();
 app.UseAuthorization();

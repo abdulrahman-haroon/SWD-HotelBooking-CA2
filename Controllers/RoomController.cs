@@ -11,12 +11,14 @@ namespace HotelBooking_CA2.Controllers
     {
         private readonly IRoomService _roomService;
         private readonly IReviewService _reviewService;
+        private readonly SessionHelper _session;
         private readonly dynamic model;
 
-        public RoomController(IRoomService roomService, IReviewService reviewService)
+        public RoomController(IRoomService roomService, IReviewService reviewService, SessionHelper session)
         {
             _roomService = roomService;
             _reviewService = reviewService;
+            _session = session;
             model = new ExpandoObject();
         }
 
@@ -63,7 +65,7 @@ namespace HotelBooking_CA2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddReview(int roomId, int rating, string comment)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = _session.GetInt32("UserId");
             if (userId == null)
                 return RedirectToAction("Login", "Account");
 

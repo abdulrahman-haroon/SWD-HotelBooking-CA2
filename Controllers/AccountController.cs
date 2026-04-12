@@ -2,6 +2,7 @@ using HotelBooking_CA2.Interfaces;
 using HotelBooking_CA2.Models;
 using HotelBooking_CA2.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Dynamic;
 
 namespace HotelBooking_CA2.Controllers
@@ -9,23 +10,26 @@ namespace HotelBooking_CA2.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly SessionHelper _session;
         private readonly dynamic model;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, SessionHelper session)
         {
             _userService = userService;
+            _session = session;
             model = new ExpandoObject();
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(bool rateLimited = false)
         {
-            model.Error = (string)null;
+            model.Error = rateLimited ? "Too many login attempts. Please wait a minute and try again." : (string)null;
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("LoginRateLimit")]
         public IActionResult Login(string email, string password)
         {
 
@@ -54,10 +58,10 @@ namespace HotelBooking_CA2.Controllers
                 return View(model);
             }
 
-            // store user info in session - no encryption, plain values
-            HttpContext.Session.SetInt32("UserId", user.Id);
-            HttpContext.Session.SetString("UserName", user.FullName);
-            HttpContext.Session.SetString("UserRole", user.Role);
+            // store user info in session - encrypted via DataProtection
+            _session.SetInt32("UserId", user.Id);
+            _session.SetString("UserName", user.FullName);
+            _session.SetString("UserRole", user.Role);
 
             return RedirectToAction("Index", "Home");
         }
@@ -125,16 +129,16 @@ namespace HotelBooking_CA2.Controllers
             _userService.SaveChanges();
 
             // auto login after registration
-            HttpContext.Session.SetInt32("UserId", user.Id);
-            HttpContext.Session.SetString("UserName", user.FullName);
-            HttpContext.Session.SetString("UserRole", user.Role);
+            _session.SetInt32("UserId", user.Id);
+            _session.SetString("UserName", user.FullName);
+            _session.SetString("UserRole", user.Role);
 
             return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            _session.Clear();
             return RedirectToAction("Login");
         }
 
@@ -160,9 +164,9 @@ namespace HotelBooking_CA2.Controllers
         {
             var data = new
             {
-                UserId = HttpContext.Session.GetInt32("UserId"),
-                UserName = HttpContext.Session.GetString("UserName"),
-                UserRole = HttpContext.Session.GetString("UserRole")
+                UserId = _session.GetInt32("UserId"),
+                UserName = _session.GetString("UserName"),
+                UserRole = _session.GetString("UserRole")
             };
             return Json(data);
         }
