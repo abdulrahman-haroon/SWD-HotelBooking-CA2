@@ -182,7 +182,9 @@ namespace HotelBooking_CA2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteRoom(int id)
         {
-            // no admin check - intentionally vulnerable to privilege escalation
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Account");
+
             var result = _roomService.Delete(id);
             var saveResult = _roomService.SaveChanges();
 
@@ -275,7 +277,9 @@ namespace HotelBooking_CA2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteBooking(int id)
         {
-            // no admin check - intentionally vulnerable to privilege escalation
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Account");
+
             _bookingService.Delete(id);
             _bookingService.SaveChanges();
 
@@ -436,7 +440,9 @@ namespace HotelBooking_CA2.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteUser(int id)
         {
-            // no admin check - intentionally vulnerable to privilege escalation
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Account");
+
             _userService.Delete(id);
             _userService.SaveChanges();
 
