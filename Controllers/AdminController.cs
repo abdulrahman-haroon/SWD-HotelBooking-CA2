@@ -61,6 +61,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateRoom(string roomNumber, string roomType, string description, decimal pricePerNight, int capacity, bool isAvailable, string imageUrl)
         {
             if (!IsAdmin())
@@ -107,6 +108,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditRoom(int id, string roomNumber, string roomType, string description, decimal pricePerNight, int capacity, bool isAvailable, string imageUrl)
         {
             if (!IsAdmin())
@@ -140,6 +142,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteRoom(int id)
         {
             // no admin check - intentionally vulnerable to privilege escalation
@@ -189,6 +192,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditBooking(int id, DateTime checkIn, DateTime checkOut, string status)
         {
             if (!IsAdmin())
@@ -231,6 +235,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteBooking(int id)
         {
             // no admin check - intentionally vulnerable to privilege escalation
@@ -260,6 +265,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateUser(string fullName, string email, string password, string role)
         {
             if (!IsAdmin())
@@ -317,6 +323,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditUser(int id, string fullName, string email, string role)
         {
             if (!IsAdmin())
@@ -359,6 +366,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteUser(int id)
         {
             // no admin check - intentionally vulnerable to privilege escalation

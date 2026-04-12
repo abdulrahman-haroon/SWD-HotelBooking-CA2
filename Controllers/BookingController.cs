@@ -49,6 +49,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(int roomId, DateTime checkIn, DateTime checkOut)
         {
             var userId = HttpContext.Session.GetInt32("UserId");

@@ -24,6 +24,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(string email, string password)
         {
             
@@ -61,6 +62,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(string fullName, string email, string password, string confirmPassword)
         {
             

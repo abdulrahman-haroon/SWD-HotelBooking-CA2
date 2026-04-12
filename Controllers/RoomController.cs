@@ -59,6 +59,7 @@ namespace HotelBooking_CA2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddReview(int roomId, int rating, string comment)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
