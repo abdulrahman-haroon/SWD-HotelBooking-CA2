@@ -29,10 +29,15 @@ namespace HotelBooking_CA2.Controllers
             return _session.GetString("UserRole") == "Admin";
         }
 
+        private IActionResult Unauthorized()
+        {
+            return View("Unauthorized");
+        }
+
         public IActionResult Index()
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var totalRooms = _roomService.GetAll().Count();
             var totalBookings = _bookingService.GetAll().Count();
@@ -47,7 +52,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult Rooms()
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var rooms = _roomService.GetAll();
             return View(rooms);
@@ -57,7 +62,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult CreateRoom()
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             model.Error = (string)null;
             return View(model);
@@ -68,7 +73,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult CreateRoom(string roomNumber, string roomType, string description, decimal pricePerNight, int capacity, bool isAvailable, string imageUrl)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             model.Error = (string)null;
 
@@ -116,7 +121,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult EditRoom(int id)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var room = _roomService.GetById(id);
             if (room == null)
@@ -132,7 +137,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult EditRoom(int id, string roomNumber, string roomType, string description, decimal pricePerNight, int capacity, bool isAvailable, string imageUrl)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var room = _roomService.GetById(id);
             if (room == null)
@@ -183,16 +188,14 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult DeleteRoom(int id)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var result = _roomService.Delete(id);
             var saveResult = _roomService.SaveChanges();
 
-            // intentionally vulnerable - exposes internal error details to the user
-            if (!string.IsNullOrEmpty(result))
-                return Content(result);
-            if (!string.IsNullOrEmpty(saveResult))
-                return Content(saveResult);
+            // return generic error message - do not expose internal details
+            if (!string.IsNullOrEmpty(result) || !string.IsNullOrEmpty(saveResult))
+                return RedirectToAction("Rooms");
 
             return RedirectToAction("Rooms");
         }
@@ -200,7 +203,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult Bookings()
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var bookings = _bookingService.dbset()
                 .Include(b => b.Room)
@@ -215,7 +218,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult EditBooking(int id)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var booking = _bookingService.dbset()
                 .Include(b => b.Room)
@@ -235,7 +238,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult EditBooking(int id, DateTime checkIn, DateTime checkOut, string status)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var booking = _bookingService.dbset()
                 .Include(b => b.Room)
@@ -278,7 +281,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult DeleteBooking(int id)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             _bookingService.Delete(id);
             _bookingService.SaveChanges();
@@ -289,7 +292,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult Users()
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var users = _userService.GetAll();
             return View(users);
@@ -299,7 +302,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult CreateUser()
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             model.Error = (string)null;
             return View(model);
@@ -310,7 +313,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult CreateUser(string fullName, string email, string password, string role)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             model.Error = (string)null;
 
@@ -367,7 +370,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult EditUser(int id)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var user = _userService.GetById(id);
             if (user == null)
@@ -383,7 +386,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult EditUser(int id, string fullName, string email, string role)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             var user = _userService.GetById(id);
             if (user == null)
@@ -441,7 +444,7 @@ namespace HotelBooking_CA2.Controllers
         public IActionResult DeleteUser(int id)
         {
             if (!IsAdmin())
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
 
             _userService.Delete(id);
             _userService.SaveChanges();

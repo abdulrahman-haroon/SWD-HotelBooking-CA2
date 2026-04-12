@@ -59,9 +59,9 @@ namespace HotelBooking_CA2.Services
 
                 table.Add(obj);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.ToString();
+                return "An error occurred while processing your request.";
             }
             return "";
 
@@ -80,9 +80,9 @@ namespace HotelBooking_CA2.Services
                 //}
                 //catch(Exception ex) { }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.ToString();
+                return "An error occurred while processing your request.";
             }
             return "";
         }
@@ -95,9 +95,9 @@ namespace HotelBooking_CA2.Services
                 T existing = table.Find(id);
                 table.Remove(existing);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.ToString();
+                return "An error occurred while processing your request.";
             }
             return "";
         }
@@ -108,9 +108,9 @@ namespace HotelBooking_CA2.Services
             {
                 _context.SaveChanges(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.ToString();
+                return "An error occurred while processing your request.";
             }
             return "";
         }
