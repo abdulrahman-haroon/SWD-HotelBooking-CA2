@@ -1,0 +1,38 @@
+@model dynamic
+
+@{
+    ViewData["Title"] = "Book Room";
+    var room = (HotelBooking_CA2.Models.Room)Model.Room;
+}
+
+<h2>Book Room @room.RoomNumber</h2>
+
+<div class="card mt-3" style="max-width: 500px;">
+    <div class="card-body">
+        <p><strong>Type:</strong> @room.RoomType</p>
+        <p><strong>Capacity:</strong> @room.Capacity</p>
+        <p><strong>Price Per Night:</strong> €@room.PricePerNight.ToString("F2")</p>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger mt-3">@Model.Error</div>
+}
+
+<form method="post" asp-controller="Booking" asp-action="Create" class="mt-3" style="max-width: 500px;">
+    <input type="hidden" name="roomId" value="@room.Id" />
+
+    <div class="mb-3">
+        <label for="checkIn" class="form-label">Check-In Date</label>
+        <input type="date" class="form-control" id="checkIn" name="checkIn" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="checkOut" class="form-label">Check-Out Date</label>
+        <input type="date" class="form-control" id="checkOut" name="checkOut" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+    <a asp-controller="Room" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

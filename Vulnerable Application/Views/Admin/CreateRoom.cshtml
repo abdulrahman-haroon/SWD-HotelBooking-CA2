@@ -1,0 +1,52 @@
+@model dynamic
+
+@{
+    ViewData["Title"] = "Add Room";
+}
+
+<h2>Add Room</h2>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<form method="post" asp-controller="Admin" asp-action="CreateRoom" style="max-width: 500px;" class="mt-3">
+    <div class="mb-3">
+        <label for="roomNumber" class="form-label">Room Number</label>
+        <input type="text" class="form-control" id="roomNumber" name="roomNumber" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="roomType" class="form-label">Room Type</label>
+        <input type="text" class="form-control" id="roomType" name="roomType" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="pricePerNight" class="form-label">Price Per Night (€)</label>
+        <input type="number" class="form-control" id="pricePerNight" name="pricePerNight" step="0.01" min="0" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="capacity" class="form-label">Capacity</label>
+        <input type="number" class="form-control" id="capacity" name="capacity" min="1" required />
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="isAvailable" name="isAvailable" value="true" checked />
+        <label class="form-check-label" for="isAvailable">Available</label>
+    </div>
+
+    <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image URL</label>
+        <input type="text" class="form-control" id="imageUrl" name="imageUrl" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Create Room</button>
+    <a asp-controller="Admin" asp-action="Rooms" class="btn btn-secondary">Cancel</a>
+</form>

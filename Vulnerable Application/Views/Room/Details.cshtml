@@ -1,0 +1,87 @@
+@model dynamic
+
+@{
+    var room = (HotelBooking_CA2.Models.Room)Model.Room;
+    var reviews = (List<HotelBooking_CA2.Models.Review>)Model.Reviews;
+    ViewData["Title"] = "Room " + room.RoomNumber;
+}
+
+<h2>Room @room.RoomNumber</h2>
+
+<div class="card mt-3" style="max-width: 600px;">
+    <div class="card-body">
+        <p><strong>Type:</strong> @room.RoomType</p>
+        <p><strong>Capacity:</strong> @room.Capacity</p>
+        <p><strong>Price Per Night:</strong> €@room.PricePerNight.ToString("F2")</p>
+        <p><strong>Description:</strong> @room.Description</p>
+        <p><strong>Available:</strong> @(room.IsAvailable ? "Yes" : "No")</p>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-primary">Book This Room</a>
+    <a asp-controller="Room" asp-action="Index" class="btn btn-secondary">Back to Rooms</a>
+</div>
+
+<hr />
+
+<h4 class="mt-4">Reviews</h4>
+
+@if (reviews.Any())
+{
+    @foreach (var review in reviews)
+    {
+        <div class="card mb-2">
+            <div class="card-body">
+                <strong>@review.User.FullName</strong>
+                <span class="text-muted ms-2">@review.CreatedAt.ToString("dd/MM/yyyy")</span>
+                <br />
+                <span>Rating: @review.Rating / 5</span>
+                <p class="mb-0 mt-1">@review.Comment</p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>No reviews yet.</p>
+}
+
+<hr />
+
+<h5 class="mt-3">Leave a Review</h5>
+
+@if (Context.Session.GetString("UserName") != null)
+{
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <div class="alert alert-danger">@Model.Error</div>
+    }
+
+    <form method="post" asp-controller="Room" asp-action="AddReview" style="max-width: 500px;">
+        <input type="hidden" name="roomId" value="@room.Id" />
+
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating</label>
+            <select class="form-select" id="rating" name="rating" required>
+                <option value="">Select...</option>
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+}
+else
+{
+    <p><a asp-controller="Account" asp-action="Login">Log in</a> to leave a review.</p>
+}
