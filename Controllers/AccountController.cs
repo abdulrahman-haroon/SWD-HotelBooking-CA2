@@ -116,6 +116,12 @@ namespace HotelBooking_CA2.Controllers
                 return View(model);
             }
 
+            if (!InputValidator.IsStrongPassword(password))
+            {
+                model.Error = "Password must be at least 8 characters and include an uppercase letter, lowercase letter, number, and special character.";
+                return View(model);
+            }
+
             // check if email already exists
             var existing = _userService.Find(u => u.Email == email).FirstOrDefault();
             if (existing != null)
