@@ -1,6 +1,11 @@
 # BedBank : Hotel Booking System
 
-BedBank is a vulnerable ASP.NET Core MVC web application built for the **NCI Secure Web Development CA2 assignment (Option B)**. The project demonstrates common web security vulnerabilities, documents them against OWASP standards, and then applies fixes systematically.
+## 🎥 Video Demo
+
+- [YouTube](https://youtu.be/YcbEOl_3mmQ)
+- [OneDrive / Google Drive](https://studentncirl-my.sharepoint.com/:v:/g/personal/x24331244_student_ncirl_ie/IQA91P5w9DU2TIVF5i4s9JdvAagMhjvK_vtGu3qOGl6zevQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=1kgy6D)
+
+BedBank is a vulnerable ASP.NET Core MVC web application
 
 ## Table of Contents
 
