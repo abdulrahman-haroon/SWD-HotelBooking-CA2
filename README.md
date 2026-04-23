@@ -1,4 +1,4 @@
-# BedBank : Hotel Booking System
+# BedBank : Hotel Booking System - Option (B) Developed a basic web application
 
 ## 🎥 Video Demo
 
