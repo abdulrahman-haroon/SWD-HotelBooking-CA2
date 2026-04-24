@@ -1,4 +1,4 @@
-# BedBank : Hotel Booking System
+# BedBank : Hotel Booking System - Option (B) Developed a web app
 
 ## 🎥 Video Demo
 
@@ -289,7 +289,7 @@ Each vulnerability was tested in two phases:
 |---|---|
 | **Browser DevTools** | Inspecting session cookies (HttpOnly, Secure, SameSite flags), network requests, and response headers |
 | **PowerShell / cURL** | Automated testing of rate limiting (sending rapid POST requests to login endpoint) |
-| **SQL Injection Payloads** | Manual injection via search bar (e.g. `%' OR 1=1 --`, `%' UNION SELECT...`) to test parameterized queries |
+| **SQL Injection Payloads** | Manual injection via search bar (e.g. `') OR 1=1 --`, ` ') UNION SELECT...`) to test parameterized queries |
 | **Direct URL Manipulation** | Accessing admin endpoints (`/Admin/DeleteRoom`, `/Admin/DeleteUser`) as a Guest user to test authorization |
 | **CSRF Testing** | Submitting POST forms without anti-forgery tokens to verify rejection |
 
@@ -297,7 +297,7 @@ Each vulnerability was tested in two phases:
 
 | Test | Before Fix | After Fix |
 |---|---|---|
-| SQL injection in search | `%' OR 1=1 --` returned all rooms | Query is parameterized, payload treated as literal text |
+| SQL injection in search | `%') OR 1=1 --` returned all rooms | Query is parameterized, payload treated as literal text |
 | Brute force login | Unlimited attempts allowed | Blocked after 5 attempts per minute with friendly error |
 | Admin delete as Guest | POST to `/Admin/DeleteRoom/1` succeeded | Returns 403 Access Denied page |
 | Session cookie inspection | Cookie accessible via JavaScript, no Secure flag | HttpOnly=true, Secure=true, SameSite=Strict |
